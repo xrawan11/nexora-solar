@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 
 st.set_page_config(
     page_title="Nexora Solar",
@@ -12,6 +13,9 @@ st.set_page_config(
 # ---------------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
+
+if "intro_done" not in st.session_state:
+    st.session_state.intro_done = False
 
 def go(page_name):
     st.session_state.page = page_name
@@ -37,6 +41,35 @@ header,#MainMenu,footer{
     padding-top:1rem;
     padding-left:2rem;
     padding-right:2rem;
+}
+
+/* INTRO */
+.intro-wrap{
+    height:92vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.intro-logo{
+    font-size:78px;
+    font-weight:900;
+    font-style:italic;
+    color:white;
+    letter-spacing:4px;
+    animation:introFade 2s ease forwards;
+}
+.intro-sun{
+    color:#f6b73c;
+    text-shadow:
+    0 0 10px rgba(246,183,60,1),
+    0 0 22px rgba(246,183,60,.7),
+    0 0 38px rgba(246,183,60,.4);
+}
+@keyframes introFade{
+    0%{opacity:0;transform:scale(.78);}
+    35%{opacity:1;transform:scale(1);}
+    70%{opacity:1;}
+    100%{opacity:0;transform:scale(1.06);}
 }
 
 /* Logo */
@@ -141,6 +174,23 @@ div.stButton > button:hover{
 }
 </style>
 """, unsafe_allow_html=True)
+
+# ---------------------------
+# INTRO
+# ---------------------------
+if not st.session_state.intro_done:
+    splash = st.empty()
+    splash.markdown("""
+    <div class="intro-wrap">
+        <div class="intro-logo">
+            NEX<span class="intro-sun">O</span>RA
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    time.sleep(2)
+    splash.empty()
+    st.session_state.intro_done = True
+    st.rerun()
 
 # ---------------------------
 # TOP BAR
@@ -278,56 +328,12 @@ elif st.session_state.page == "performance":
 
     st.bar_chart(pd.DataFrame({"USD":[3,5,6,8,7,9,12]}))
 
-    st.markdown('<div class="subtitle">Comparison</div>', unsafe_allow_html=True)
-
-    st.write("Actual vs Expected")
-    st.line_chart(pd.DataFrame({
-        "Actual":[420,510,490,530],
-        "Expected":[450,520,505,540]
-    }))
-
-    st.write("Today vs Yesterday")
-    st.line_chart(pd.DataFrame({
-        "Today":[390,450,510,540],
-        "Yesterday":[360,420,500,510]
-    }))
-
-    st.write("This Month vs Last Month")
-    st.bar_chart(pd.DataFrame({
-        "This Month":[12],
-        "Last Month":[10]
-    }))
-
-    st.write("Our System vs Ideal System")
-    st.bar_chart(pd.DataFrame({
-        "Our":[94],
-        "Ideal":[100]
-    }))
-
-    st.markdown('<div class="subtitle">Reports</div>', unsafe_allow_html=True)
-
-    r1,r2,r3 = st.columns(3)
-
-    with r1:
-        st.button("Daily", key="daily_report")
-        st.download_button("PDF", "Daily Report", file_name="daily.pdf")
-
-    with r2:
-        st.button("Weekly", key="weekly_report")
-        st.download_button("PDF", "Weekly Report", file_name="weekly.pdf")
-
-    with r3:
-        st.button("Monthly", key="monthly_report")
-        st.download_button("PDF", "Monthly Report", file_name="monthly.pdf")
-
 # ==================================================
 # EXPECTED DATA PAGE
 # ==================================================
 elif st.session_state.page == "expected":
 
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
 
     a,b,c,d,e = st.columns(5)
     a.metric("Temperature","34°C")
@@ -336,39 +342,6 @@ elif st.session_state.page == "expected":
     d.metric("Irradiation","920 W/m²")
     e.metric("Wind Speed","9 km/h")
 
-    st.line_chart(pd.DataFrame({
-        "Temp":[34,35,33,36]
-    }, index=["Day1","Day2","Day3","Day4"]))
-
-    st.markdown('<div class="subtitle">Predictive Maintenance</div>', unsafe_allow_html=True)
-
-    st.file_uploader("Upload Panel Image", type=["png","jpg","jpeg"])
-
-    q1,q2 = st.columns(2)
-    q1.metric("Clean Probability","78%")
-    q2.metric("Dusty Probability","22%")
-
-    st.info("Recommendation: Light cleaning recommended.")
-
-    st.markdown('<div class="subtitle">Expected Energy Production</div>', unsafe_allow_html=True)
-
-    st.write("Predicted Output: 2100 kWh")
-    st.write("Factors:")
-    st.write("- Weather quality")
-    st.write("- Panel cleanliness")
-    st.write("- Battery availability")
-    st.write("- Low shading")
-
-    st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
-
-    st.success("11:00 AM - 2:00 PM")
-    st.write("Reason: highest irradiation and stable temperature.")
-
-    st.markdown('<div class="subtitle">Recommendations + Alerts</div>', unsafe_allow_html=True)
-
-    st.warning("Clean panels this week.")
-    st.success("Run heavy loads near noon.")
-
 # ==================================================
 # BATTERY PAGE
 # ==================================================
@@ -376,26 +349,7 @@ elif st.session_state.page == "battery":
 
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
-
-    p1,p2 = st.columns(2)
-    p1.metric("Stored Energy","82%")
-    p2.metric("Available Capacity","18%")
-
-    st.markdown('<div class="subtitle">Electrical Metrics</div>', unsafe_allow_html=True)
-
     a,b,c = st.columns(3)
     a.metric("Voltage","412 V")
     b.metric("Current","32 A")
     c.metric("Temp","31°C")
-
-    st.markdown('<div class="subtitle">Battery Health</div>', unsafe_allow_html=True)
-
-    x,y,z = st.columns(3)
-    x.metric("Health","Healthy")
-    y.metric("Cycles","1240")
-    z.metric("Life Span","8.4 Years")
-
-    st.line_chart(pd.DataFrame({
-        "Charge %":[95,92,90,88,85,82]
-    }))
