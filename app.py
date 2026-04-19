@@ -247,8 +247,13 @@ elif st.session_state.page == "battery":
     b.metric("Cycles","1240")
     c.metric("Life Span","8.4 Years")
 
-# ---------- BACK ----------
+# --
+st.wr# ---------- BACK ----------
 st.write("")
-if st.button("← Home"):
-    go("home")
-    st.rerun()
+c1, c2, c3 = st.columns([1,2,1])
+
+with c2:
+    if st.session_state.page != "home":
+        if st.button("← Back to Home", use_container_width=True):
+            go("home")
+            st.rerun()
