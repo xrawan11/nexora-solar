@@ -1,211 +1,179 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Nexora Solar",
-    page_icon="☀️",
-    layout="wide"
-)
+st.set_page_config(page_title="Nexora Solar", layout="wide")
 
 st.markdown("""
 <style>
-html, body, [class*="css"]{
-background: linear-gradient(135deg,#030303,#0b0b0b,#1a1200);
-color:white;
-font-family:Arial, sans-serif;
-}
-
-header,#MainMenu,footer{
-visibility:hidden;
-}
-
-.block-container{
-padding-top:1rem;
-padding-left:2rem;
-padding-right:2rem;
-max-width:1400px;
-}
+html,body,[class*="css"]{background:#050505;color:white;font-family:Arial;}
+header,#MainMenu,footer{visibility:hidden;}
+.block-container{padding:0 2rem;max-width:1450px;}
 
 .logo{
-font-size:40px;
+font-size:42px;
 font-weight:900;
-color:#f6b73c;
+font-style:italic;
+color:white;
 letter-spacing:2px;
 }
-
-.nav{
-text-align:right;
-font-size:17px;
-color:#d7d7d7;
-padding-top:10px;
-}
-
-.hero{
-text-align:center;
-padding-top:70px;
-padding-bottom:45px;
-}
-
-.hero h1{
-font-size:72px;
-font-weight:900;
-line-height:1.08;
-margin-bottom:18px;
-}
-
-.gold{
+.sun{
 color:#f6b73c;
+text-shadow:0 0 15px rgba(246,183,60,.6);
 }
 
-.sub{
-font-size:22px;
-color:#bfbfbf;
-margin-bottom:25px;
+.hero{text-align:center;padding-top:70px;padding-bottom:30px;}
+.hero h1{font-size:78px;font-weight:900;line-height:1.05;}
+.gold{color:#f6b73c;}
+
+.desc{
+max-width:950px;
+margin:auto;
+font-size:20px;
+line-height:1.7;
+color:#d5d5d5;
 }
 
 .btn{
 display:inline-block;
-background:#f6b73c;
-color:black;
+margin-top:28px;
 padding:16px 38px;
 border-radius:14px;
+background:#f6b73c;
+color:black;
 font-size:22px;
-font-weight:800;
-margin-top:10px;
+font-weight:900;
+animation:pulse 2s infinite;
+}
+@keyframes pulse{
+50%{box-shadow:0 0 20px rgba(246,183,60,.45);}
 }
 
 .stat{
-background:rgba(255,255,255,0.03);
-border:1px solid rgba(255,255,255,0.08);
+background:#111;
+border:1px solid #222;
+border-radius:18px;
+padding:28px;
+height:155px;
+text-align:center;
+}
+.stat h2{margin:0;color:#f6b73c;font-size:42px;}
+.stat p{margin-top:10px;color:#ccc;}
+
+.main{
+background:#0d0d0d;
+border:1px solid #202020;
+border-radius:22px;
+padding:26px;
+height:100%;
+transition:.25s;
+}
+.main:hover{
+transform:translateY(-8px);
+border-color:#f6b73c;
+box-shadow:0 0 20px rgba(246,183,60,.15);
+}
+.main h3{
+font-size:28px;
+color:#f6b73c;
+margin-bottom:18px;
+}
+
+.opt{
+padding:12px 14px;
+border-radius:12px;
+background:#151515;
+margin-bottom:10px;
+border:1px solid #222;
+}
+.opt:hover{
+border-color:#f6b73c;
+background:#1b1b1b;
+}
+
+.section{
+font-size:48px;
+font-weight:900;
+margin-top:80px;
+margin-bottom:20px;
+color:#f6b73c;
+}
+
+.sub{
+font-size:28px;
+font-weight:800;
+margin-top:28px;
+margin-bottom:10px;
+}
+
+.box{
+background:#101010;
+border:1px solid #222;
 border-radius:18px;
 padding:22px;
-text-align:center;
-margin-top:8px;
-}
-
-.stat h2{
-font-size:42px;
-margin:0;
-color:#f6b73c;
-}
-
-.stat p{
-font-size:16px;
-color:#d4d4d4;
-margin-top:8px;
-}
-
-.section-title{
-font-size:40px;
-font-weight:900;
-margin-top:60px;
-margin-bottom:25px;
-}
-
-.card{
-background:rgba(255,255,255,0.035);
-border:1px solid rgba(255,255,255,0.07);
-border-radius:20px;
-padding:24px;
-height:100%;
-}
-
-.card h3{
-font-size:28px;
-margin-bottom:12px;
-color:#f6b73c;
-}
-
-.tag{
-display:inline-block;
-padding:7px 12px;
-border-radius:999px;
-background:rgba(246,183,60,0.12);
-border:1px solid rgba(246,183,60,0.25);
-font-size:13px;
-margin:4px;
-color:#ffd98a;
-}
-
-.small{
-color:#bcbcbc;
-line-height:1.7;
-font-size:16px;
+margin-bottom:16px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Top bar
-a,b = st.columns([5,5])
+# top
+a,b=st.columns([8,1])
 with a:
-    st.markdown('<div class="logo">☀ NEXORA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="logo">NEX<span class="sun">O</span>RA</div>', unsafe_allow_html=True)
 with b:
-    st.markdown('<div class="nav">Home &nbsp;&nbsp; Dashboard &nbsp;&nbsp; AI Insights &nbsp;&nbsp; Contact</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:34px;text-align:right;">☰</div>', unsafe_allow_html=True)
 
-# Hero
+# hero
 st.markdown("""
 <div class="hero">
-<h1>
-Where Energy Is <br>
-<span class="gold">Managed, Not Wasted</span>
-</h1>
-<div class="sub">Premium solar intelligence platform for monitoring, prediction, and battery control.</div>
+<h1>Where Energy Is <span class="gold">Managed</span><br>Not Wasted</h1>
+<div class="desc">
+Energy is intelligently captured, monitored, and optimized for real-world use.
+This space aims to improve workflow quality, reduce company workload, and enable efficient and flexible operations.
+</div>
 <div class="btn">Let's Start Today →</div>
 </div>
 """, unsafe_allow_html=True)
 
-# Stats
-s1,s2,s3,s4 = st.columns(4)
-stats = [
-("15K+","Installations"),
-("98+","Projects Completed"),
-("40%","Avg. Cost Saving"),
-("12","Years Experience")
-]
-for col,(num,txt) in zip([s1,s2,s3,s4],stats):
+# stats
+c1,c2,c3,c4=st.columns(4)
+items=[("15K+","Installations"),("98+","Projects Completed"),("40%","Avg. Cost Saving"),("12","Years Experience")]
+for col,(n,t) in zip([c1,c2,c3,c4],items):
     with col:
-        st.markdown(f'<div class="stat"><h2>{num}</h2><p>{txt}</p></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat"><h2>{n}</h2><p>{t}</p></div>', unsafe_allow_html=True)
 
-# Main Sections
-st.markdown('<div class="section-title">Core Platform Sections</div>', unsafe_allow_html=True)
+# main sections
+st.markdown('<div class="section">Core Sections</div>', unsafe_allow_html=True)
 
-c1,c2,c3 = st.columns(3)
+x1,x2,x3=st.columns(3)
 
-with c1:
+with x1:
     st.markdown("""
-<div class="card">
-<h3>⚡ Performance</h3>
-<div class="small">Track real-time generation, ROI, and operational efficiency.</div><br>
-<span class="tag">Current Performance</span>
-<span class="tag">Profits / Losses</span>
-<span class="tag">Reports</span>
-<span class="tag">Comparison</span>
+<div class="main">
+<h3>Performance</h3>
+<div class="opt">Current Performance</div>
+<div class="opt">Profits / Losses</div>
+<div class="opt">Reports</div>
+<div class="opt">Comparison</div>
 </div>
 """, unsafe_allow_html=True)
 
-with c2:
+with x2:
     st.markdown("""
-<div class="card">
-<h3>☁ Expected Data</h3>
-<div class="small">Use forecasting models and AI recommendations to maximize production.</div><br>
-<span class="tag">Weather</span>
-<span class="tag">Predictive Maintenance</span>
-<span class="tag">Energy Forecast</span>
-<span class="tag">Alerts</span>
+<div class="main">
+<h3>Expected Data</h3>
+<div class="opt">Weather</div>
+<div class="opt">Predictive Maintenance</div>
+<div class="opt">Expected Energy Production</div>
+<div class="opt">Best Time for Operation</div>
+<div class="opt">Recommendations + Alerts</div>
 </div>
 """, unsafe_allow_html=True)
 
-with c3:
+with x3:
     st.markdown("""
-<div class="card">
-<h3>🔋 Battery System</h3>
-<div class="small">Monitor storage assets, health metrics, and charging strategy.</div><br>
-<span class="tag">Energy Inventory</span>
-<span class="tag">Voltage / Temp</span>
-<span class="tag">Battery Status</span>
-<span class="tag">Lifecycle</span>
+<div class="main">
+<h3>Battery Status</h3>
+<div class="opt">Energy Inventory</div>
+<div class="opt">Electrical Metrics</div>
+<div class="opt">Battery Status</div>
 </div>
 """, unsafe_allow_html=True)
-
-# Footer note
-st.markdown("<br><br>", unsafe_allow_html=True)
-st.caption("Nexora Solar Intelligence Platform © 2026")
