@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import time
 
 st.set_page_config(
     page_title="Nexora Solar",
@@ -13,9 +12,6 @@ st.set_page_config(
 # ---------------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
-
-if "intro_done" not in st.session_state:
-    st.session_state.intro_done = False
 
 def go(page_name):
     st.session_state.page = page_name
@@ -56,35 +52,6 @@ header,#MainMenu,footer{
     text-shadow:
     0 0 5px rgba(246,183,60,.8),
     0 0 12px rgba(246,183,60,.45);
-}
-
-/* INTRO */
-.intro-wrap{
-    height:88vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-.intro-logo{
-    font-size:72px;
-    font-weight:900;
-    font-style:italic;
-    color:white;
-    letter-spacing:4px;
-    animation:introFade 2s ease forwards;
-}
-.intro-sun{
-    color:#f6b73c;
-    text-shadow:
-    0 0 8px rgba(246,183,60,.95),
-    0 0 18px rgba(246,183,60,.65),
-    0 0 30px rgba(246,183,60,.35);
-}
-@keyframes introFade{
-    0%{opacity:0;transform:scale(.78);}
-    35%{opacity:1;transform:scale(1);}
-    70%{opacity:1;}
-    100%{opacity:0;transform:scale(1.06);}
 }
 
 /* Hero */
@@ -131,7 +98,7 @@ header,#MainMenu,footer{
     border-radius:20px;
     padding:18px;
     min-height:220px;
-    transition:.12s;
+    transition:.18s;
     box-shadow:0 0 10px rgba(246,183,60,.05);
 }
 .main:hover{
@@ -144,14 +111,6 @@ header,#MainMenu,footer{
     font-weight:900;
     color:#f6b73c;
     margin-bottom:10px;
-}
-
-/* Fake clickable full card button */
-.cardbtn button{
-    width:100%;
-    height:220px;
-    opacity:0;
-    margin-top:-220px;
 }
 
 /* Section titles */
@@ -174,7 +133,7 @@ div.stButton > button{
     border:1px solid #333;
     background:#111;
     color:white;
-    transition:.12s;
+    transition:.15s;
 }
 div.stButton > button:hover{
     border-color:#f6b73c;
@@ -182,21 +141,6 @@ div.stButton > button:hover{
 }
 </style>
 """, unsafe_allow_html=True)
-
-# ---------------------------
-# INTRO SPLASH
-# ---------------------------
-if not st.session_state.intro_done:
-    st.markdown("""
-    <div class="intro-wrap">
-        <div class="intro-logo">
-            NEX<span class="intro-sun">O</span>RA
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    time.sleep(2)
-    st.session_state.intro_done = True
-    st.rerun()
 
 # ---------------------------
 # TOP BAR
@@ -280,10 +224,8 @@ if st.session_state.page == "home":
         <p>Monitoring, reports, profits, comparisons.</p>
         </div>
         """, unsafe_allow_html=True)
-        st.markdown('<div class="cardbtn">', unsafe_allow_html=True)
-        if st.button("Performance", key="card_perf"):
+        if st.button("Open Performance", key="open_perf"):
             go("performance")
-        st.markdown('</div>', unsafe_allow_html=True)
 
     with c2:
         st.markdown("""
@@ -292,10 +234,8 @@ if st.session_state.page == "home":
         <p>Weather, AI forecasts, maintenance insights.</p>
         </div>
         """, unsafe_allow_html=True)
-        st.markdown('<div class="cardbtn">', unsafe_allow_html=True)
-        if st.button("Expected Data", key="card_exp"):
+        if st.button("Open Expected Data", key="open_exp"):
             go("expected")
-        st.markdown('</div>', unsafe_allow_html=True)
 
     with c3:
         st.markdown("""
@@ -304,10 +244,8 @@ if st.session_state.page == "home":
         <p>Inventory, health, voltage and cycles.</p>
         </div>
         """, unsafe_allow_html=True)
-        st.markdown('<div class="cardbtn">', unsafe_allow_html=True)
-        if st.button("Battery Status", key="card_bat"):
+        if st.button("Open Battery", key="open_bat"):
             go("battery")
-        st.markdown('</div>', unsafe_allow_html=True)
 
 # ==================================================
 # PERFORMANCE PAGE
@@ -346,6 +284,24 @@ elif st.session_state.page == "performance":
     st.line_chart(pd.DataFrame({
         "Actual":[420,510,490,530],
         "Expected":[450,520,505,540]
+    }))
+
+    st.write("Today vs Yesterday")
+    st.line_chart(pd.DataFrame({
+        "Today":[390,450,510,540],
+        "Yesterday":[360,420,500,510]
+    }))
+
+    st.write("This Month vs Last Month")
+    st.bar_chart(pd.DataFrame({
+        "This Month":[12],
+        "Last Month":[10]
+    }))
+
+    st.write("Our System vs Ideal System")
+    st.bar_chart(pd.DataFrame({
+        "Our":[94],
+        "Ideal":[100]
     }))
 
     st.markdown('<div class="subtitle">Reports</div>', unsafe_allow_html=True)
@@ -397,6 +353,21 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Expected Energy Production</div>', unsafe_allow_html=True)
 
     st.write("Predicted Output: 2100 kWh")
+    st.write("Factors:")
+    st.write("- Weather quality")
+    st.write("- Panel cleanliness")
+    st.write("- Battery availability")
+    st.write("- Low shading")
+
+    st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
+
+    st.success("11:00 AM - 2:00 PM")
+    st.write("Reason: highest irradiation and stable temperature.")
+
+    st.markdown('<div class="subtitle">Recommendations + Alerts</div>', unsafe_allow_html=True)
+
+    st.warning("Clean panels this week.")
+    st.success("Run heavy loads near noon.")
 
 # ==================================================
 # BATTERY PAGE
@@ -417,3 +388,14 @@ elif st.session_state.page == "battery":
     a.metric("Voltage","412 V")
     b.metric("Current","32 A")
     c.metric("Temp","31°C")
+
+    st.markdown('<div class="subtitle">Battery Health</div>', unsafe_allow_html=True)
+
+    x,y,z = st.columns(3)
+    x.metric("Health","Healthy")
+    y.metric("Cycles","1240")
+    z.metric("Life Span","8.4 Years")
+
+    st.line_chart(pd.DataFrame({
+        "Charge %":[95,92,90,88,85,82]
+    }))
