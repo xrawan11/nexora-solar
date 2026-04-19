@@ -1,13 +1,18 @@
 import streamlit as st
+import time
 
-st.set_page_config(page_title="Nexora Solar", layout="wide")
+st.set_page_config(page_title="Nexora Solar", page_icon="☀️", layout="wide")
 
 # ---------- STATE ----------
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
+if "splash_done" not in st.session_state:
+    st.session_state.splash_done = False
+
 def go(page):
     st.session_state.page = page
+    st.rerun()
 
 # ---------- STYLE ----------
 st.markdown("""
@@ -21,7 +26,7 @@ header,#MainMenu,footer{visibility:hidden;}
 .block-container{max-width:1450px;padding-top:1rem;padding-left:2rem;padding-right:2rem;}
 
 .logo{
-font-size:42px;
+font-size:44px;
 font-weight:900;
 font-style:italic;
 color:white;
@@ -29,7 +34,7 @@ letter-spacing:2px;
 }
 .sun{
 color:#f6b73c;
-text-shadow:0 0 18px rgba(246,183,60,.55);
+text-shadow:0 0 18px rgba(246,183,60,.65);
 }
 
 .hero{text-align:center;padding-top:60px;padding-bottom:35px;}
@@ -37,18 +42,11 @@ text-shadow:0 0 18px rgba(246,183,60,.55);
 .gold{color:#f6b73c;}
 
 .desc{
-max-width:950px;
+max-width:980px;
 margin:auto;
 font-size:20px;
 line-height:1.7;
 color:#d5d5d5;
-}
-
-.glow{
-animation:pulse 2s infinite;
-}
-@keyframes pulse{
-50%{box-shadow:0 0 18px rgba(246,183,60,.45);}
 }
 
 .stat{
@@ -67,53 +65,96 @@ background:#101010;
 border:1px solid #222;
 border-radius:22px;
 padding:24px;
-min-height:330px;
-transition:.25s;
+min-height:320px;
+transition:.3s;
+animation:rise .8s ease;
 }
 .mainbox:hover{
-transform:translateY(-8px);
+transform:translateY(-10px);
 border-color:#f6b73c;
+box-shadow:0 0 20px rgba(246,183,60,.14);
 }
-
-.mainbox h3{
-font-size:28px;
-color:#f6b73c;
-margin-bottom:18px;
-}
-
-.subbtn{
-margin-bottom:10px;
+@keyframes rise{
+from{opacity:0;transform:translateY(35px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 .title{
-font-size:48px;
+font-size:50px;
 font-weight:900;
 color:#f6b73c;
-margin-top:30px;
-margin-bottom:25px;
+margin-top:20px;
+margin-bottom:20px;
 }
 
 .subtitle{
-font-size:28px;
+font-size:34px;
 font-weight:800;
-margin-top:25px;
-margin-bottom:12px;
+color:white;
+margin-top:10px;
+margin-bottom:10px;
+}
+
+.small{
+font-size:18px;
+color:#d5d5d5;
+line-height:1.8;
+}
+
+.glowbtn button{
+background:#f6b73c !important;
+color:black !important;
+font-weight:900 !important;
+border:none !important;
+animation:pulse 2s infinite;
+}
+@keyframes pulse{
+50%{box-shadow:0 0 20px rgba(246,183,60,.45);}
+}
+
+.splash{
+height:85vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:74px;
+font-weight:900;
+font-style:italic;
+color:white;
+letter-spacing:3px;
+animation:pop .8s ease;
+}
+@keyframes pop{
+from{transform:scale(.7);opacity:0;}
+to{transform:scale(1);opacity:1;}
 }
 </style>
 """, unsafe_allow_html=True)
 
+# ---------- SPLASH ----------
+if not st.session_state.splash_done:
+    st.markdown("""
+    <div class="splash">
+    NEX<span class="sun">O</span>RA
+    </div>
+    """, unsafe_allow_html=True)
+    time.sleep(2)
+    st.session_state.splash_done = True
+    st.rerun()
+
 # ---------- TOP ----------
-a,b=st.columns([8,1])
+a,b = st.columns([8,1])
+
 with a:
     st.markdown('<div class="logo">NEX<span class="sun">O</span>RA</div>', unsafe_allow_html=True)
 
 with b:
     with st.popover("☰"):
+        if st.button("Performance"): go("performance_menu")
+        if st.button("Expected Data"): go("expected_menu")
+        if st.button("Battery Status"): go("battery_menu")
         if st.button("Current Performance"): go("current")
-        if st.button("AI Insights"): go("ai")
-        if st.button("Expected Data"): go("expected")
         if st.button("Recommendations + Alerts"): go("recommend")
-        if st.button("Battery Status"): go("battery")
 
 # ---------- HOME ----------
 if st.session_state.page == "home":
@@ -129,55 +170,57 @@ if st.session_state.page == "home":
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown('<div class="glowbtn">', unsafe_allow_html=True)
     if st.button("Let's Start Today →"):
-        go("performance")
-        st.rerun()
+        go("current")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.write("")
 
-    s1,s2,s3,s4=st.columns(4)
+    s1,s2,s3,s4 = st.columns(4)
     vals=[("15K+","Installations"),("98+","Projects Completed"),("40%","Avg. Cost Saving"),("12","Years Experience")]
+
     for col,(n,t) in zip([s1,s2,s3,s4],vals):
         with col:
             st.markdown(f'<div class="stat"><h2>{n}</h2><p>{t}</p></div>', unsafe_allow_html=True)
 
     st.write("")
-    st.write("")
-
-    c1,c2,c3=st.columns(3)
+    c1,c2,c3 = st.columns(3)
 
     with c1:
-        st.markdown('<div class="mainbox"><h3>Performance</h3></div>', unsafe_allow_html=True)
-        if st.button("Current Performance", key="p1"): go("current")
-        if st.button("Profits / Losses", key="p2"): go("profits")
-        if st.button("Reports", key="p3"): go("reports")
-        if st.button("Comparison", key="p4"): go("compare")
+        st.markdown('<div class="mainbox"><div class="title" style="font-size:30px;">Performance</div></div>', unsafe_allow_html=True)
+        if st.button("Current Performance"): go("current")
+        if st.button("Profits / Losses"): go("profits")
+        if st.button("Reports"): go("reports")
+        if st.button("Comparison"): go("compare")
 
     with c2:
-        st.markdown('<div class="mainbox"><h3>Expected Data</h3></div>', unsafe_allow_html=True)
-        if st.button("Weather", key="e1"): go("weather")
-        if st.button("Predictive Maintenance", key="e2"): go("maint")
-        if st.button("Expected Energy Production", key="e3"): go("energy")
-        if st.button("Best Time for Operation", key="e4"): go("best")
-        if st.button("Recommendations + Alerts", key="e5"): go("recommend")
+        st.markdown('<div class="mainbox"><div class="title" style="font-size:30px;">Expected Data</div></div>', unsafe_allow_html=True)
+        if st.button("Weather"): go("weather")
+        if st.button("Predictive Maintenance"): go("maint")
+        if st.button("Expected Energy Production"): go("energy")
+        if st.button("Best Time for Operation"): go("best")
+        if st.button("Recommendations + Alerts"): go("recommend")
 
     with c3:
-        st.markdown('<div class="mainbox"><h3>Battery Status</h3></div>', unsafe_allow_html=True)
-        if st.button("Energy Inventory", key="b1"): go("inventory")
-        if st.button("Electrical Metrics", key="b2"): go("metrics")
-        if st.button("Battery Status", key="b3"): go("battery")
+        st.markdown('<div class="mainbox"><div class="title" style="font-size:30px;">Battery Status</div></div>', unsafe_allow_html=True)
+        if st.button("Energy Inventory"): go("inventory")
+        if st.button("Electrical Metrics"): go("metrics")
+        if st.button("Battery Status"): go("battery")
 
-# ---------- PERFORMANCE ----------
-elif st.session_state.page == "performance":
+# ---------- PERFORMANCE MENU ----------
+elif st.session_state.page == "performance_menu":
     st.markdown('<div class="title">Performance</div>', unsafe_allow_html=True)
-    st.write("Choose section from home cards.")
+    if st.button("Current Performance"): go("current")
+    if st.button("Profits / Losses"): go("profits")
+    if st.button("Reports"): go("reports")
+    if st.button("Comparison"): go("compare")
 
 elif st.session_state.page == "current":
-    st.markdown('<div class="title">Current Performance</div>', unsafe_allow_html=True)
-    st.metric("Current Output","520 kW")
-    st.metric("Production","1800 kWh")
-    st.metric("Efficiency","94%")
-    st.write("System Status: Normal")
+    st.markdown('<div class="title">Performance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Current Output</div>', unsafe_allow_html=True)
+    st.markdown('<div class="small">Current Energy: 520 kW<br>Production: 1800 kWh<br>Efficiency: 94%</div>', unsafe_allow_html=True)
+    st.write("")
     st.line_chart([320,380,430,500,540,510,470,420])
 
 elif st.session_state.page == "profits":
@@ -186,7 +229,6 @@ elif st.session_state.page == "profits":
     a.metric("Revenue","$12,400")
     b.metric("Profits","$8,100")
     c.metric("Losses","$1,240")
-    st.bar_chart([4,6,8,7,9,12])
 
 elif st.session_state.page == "reports":
     st.markdown('<div class="title">Reports</div>', unsafe_allow_html=True)
@@ -196,45 +238,66 @@ elif st.session_state.page == "reports":
     st.download_button("PDF Download","Report","report.pdf")
 
 elif st.session_state.page == "compare":
-    st.markdown('<div class="title">Performance Comparison</div>', unsafe_allow_html=True)
-    st.write("Actual Power vs Expected Power")
+    st.markdown('<div class="title">Comparison</div>', unsafe_allow_html=True)
     st.line_chart({"Actual":[420,510,490],"Expected":[450,520,505]})
 
 # ---------- EXPECTED ----------
+elif st.session_state.page == "expected_menu":
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    if st.button("Weather"): go("weather")
+    if st.button("Predictive Maintenance"): go("maint")
+    if st.button("Expected Energy Production"): go("energy")
+    if st.button("Best Time for Operation"): go("best")
+    if st.button("Recommendations + Alerts"): go("recommend")
+
 elif st.session_state.page == "weather":
-    st.markdown('<div class="title">Weather</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
     a,b,c,d,e=st.columns(5)
     a.metric("Temp","34°C")
     b.metric("Humidity","48%")
-    c.metric("Cloud","15%")
-    d.metric("Wind","9 km/h")
+    c.metric("Cloud Cover","15%")
+    d.metric("Wind Speed","9 km/h")
     e.metric("Irradiation","920 W/m²")
 
 elif st.session_state.page == "maint":
-    st.markdown('<div class="title">Predictive Maintenance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Predictive Maintenance</div>', unsafe_allow_html=True)
     st.file_uploader("Upload Panel Image")
     st.info("Light dust detected. Cleaning recommended.")
 
 elif st.session_state.page == "energy":
-    st.markdown('<div class="title">Expected Energy Production</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Expected Energy Production</div>', unsafe_allow_html=True)
     st.metric("Predicted Output","2100 kWh")
 
 elif st.session_state.page == "best":
-    st.markdown('<div class="title">Best Time for Operation</div>', unsafe_allow_html=True)
-    st.success("Best operating window: 11:00 AM - 2:00 PM")
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
+    st.success("11:00 AM - 2:00 PM")
 
 elif st.session_state.page == "recommend":
-    st.markdown('<div class="title">Recommendations + Alerts</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Recommendations + Alerts</div>', unsafe_allow_html=True)
     st.warning("Clean panels this week.")
     st.success("Battery charging optimized for tomorrow.")
 
 # ---------- BATTERY ----------
+elif st.session_state.page == "battery_menu":
+    st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
+    if st.button("Energy Inventory"): go("inventory")
+    if st.button("Electrical Metrics"): go("metrics")
+    if st.button("Battery Status"): go("battery")
+
 elif st.session_state.page == "inventory":
-    st.markdown('<div class="title">Energy Inventory</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
     st.metric("Stored Energy","82%")
+    st.metric("Available Capacity","18%")
 
 elif st.session_state.page == "metrics":
-    st.markdown('<div class="title">Electrical Metrics</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Electrical Metrics</div>', unsafe_allow_html=True)
     a,b,c=st.columns(3)
     a.metric("Voltage","412 V")
     b.metric("Current","32 A")
@@ -242,18 +305,15 @@ elif st.session_state.page == "metrics":
 
 elif st.session_state.page == "battery":
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">System Health</div>', unsafe_allow_html=True)
     a,b,c=st.columns(3)
     a.metric("Health","Healthy")
     b.metric("Cycles","1240")
     c.metric("Life Span","8.4 Years")
+    st.line_chart([95,92,89,86,84,82])
 
-# --
-st.wr# ---------- BACK ----------
+# ---------- BACK ----------
 st.write("")
-c1, c2, c3 = st.columns([1,2,1])
-
-with c2:
-    if st.session_state.page != "home":
-        if st.button("← Back to Home", use_container_width=True):
-            go("home")
-            st.rerun()
+if st.session_state.page != "home":
+    if st.button("← Back to Home"):
+        go("home")
