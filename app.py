@@ -14,13 +14,13 @@ st.set_page_config(
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-# انترو يظهر كل مرة جديدة يفتح فيها الموقع
+# الانترو
 if "intro_done" not in st.session_state:
     st.session_state.intro_done = False
 
 def go(page_name):
     st.session_state.page = page_name
-    st.rerun()   # أسرع انتقال مباشر
+    st.rerun()
 
 # ---------------------------
 # STYLE
@@ -167,7 +167,7 @@ div.stButton > button{
     border:1px solid #333;
     background:#111;
     color:white;
-    transition:.12s;
+    transition:.15s;
 }
 div.stButton > button:hover{
     border-color:#f6b73c;
@@ -177,11 +177,11 @@ div.stButton > button:hover{
 """, unsafe_allow_html=True)
 
 # ---------------------------
-# INTRO (رجعناه)
+# INTRO
 # ---------------------------
 if not st.session_state.intro_done:
-    holder = st.empty()
-    holder.markdown("""
+    intro = st.empty()
+    intro.markdown("""
     <div class="intro-wrap">
         <div class="intro-logo">
             NEX<span class="intro-sun">O</span>RA
@@ -190,8 +190,7 @@ if not st.session_state.intro_done:
     """, unsafe_allow_html=True)
 
     time.sleep(2)
-    holder.empty()
-
+    intro.empty()
     st.session_state.intro_done = True
     st.rerun()
 
