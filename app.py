@@ -11,8 +11,8 @@ if "page" not in st.session_state:
 if "report_type" not in st.session_state:
     st.session_state.report_type = "Daily"
 
-def go(x):
-    st.session_state.page = x
+def go(page):
+    st.session_state.page = page
     st.rerun()
 
 # ---------------- STYLE ----------------
@@ -24,36 +24,68 @@ color:white;
 font-family:Arial,sans-serif;
 }
 header,#MainMenu,footer{visibility:hidden;}
-.block-container{max-width:1450px;padding-top:1rem;padding-left:2rem;padding-right:2rem;}
+.block-container{
+max-width:1450px;
+padding-top:1rem;
+padding-left:2rem;
+padding-right:2rem;
+}
 
+/* logo */
 .logo{
-font-size:38px;
+font-size:36px;
 font-weight:900;
 font-style:italic;
-color:white;
 letter-spacing:2px;
+color:white;
 }
 .sun{
 color:#f6b73c;
 text-shadow:
-0 0 6px rgba(246,183,60,.7),
-0 0 12px rgba(246,183,60,.5),
-0 0 18px rgba(246,183,60,.35);
+0 0 6px rgba(246,183,60,.8),
+0 0 12px rgba(246,183,60,.55),
+0 0 18px rgba(246,183,60,.3);
 }
 
+/* splash */
+.splash{
+height:90vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:64px;
+font-weight:900;
+font-style:italic;
+opacity:0;
+animation:intro 2s ease forwards;
+}
+@keyframes intro{
+0%{opacity:0;transform:scale(.75);}
+40%{opacity:1;transform:scale(1);}
+70%{opacity:1;}
+100%{opacity:0;transform:scale(1.05);}
+}
+
+/* hero */
 .hero{
 text-align:center;
-padding:55px 0 35px 0;
+padding:45px 0 35px 0;
 }
-
 .hero h1{
 font-size:72px;
 font-weight:900;
 line-height:1.08;
+margin-bottom:18px;
 }
-
-.gold{color:#f6b73c;}
-
+.gold{
+color:#f6b73c;
+animation:goldpulse 2s infinite;
+}
+@keyframes goldpulse{
+50%{
+text-shadow:0 0 18px rgba(246,183,60,.45);
+}
+}
 .desc{
 max-width:950px;
 margin:auto;
@@ -62,6 +94,7 @@ line-height:1.7;
 color:#d5d5d5;
 }
 
+/* stats */
 .stat{
 background:#101010;
 border:1px solid #222;
@@ -70,52 +103,60 @@ padding:22px;
 height:150px;
 text-align:center;
 }
-
 .stat h2{
 margin:0;
 font-size:42px;
 color:#f6b73c;
 }
 
+/* main cards */
 .main{
 background:#101010;
 border:1px solid #222;
 border-radius:22px;
-padding:22px;
-min-height:420px;
-box-shadow:0 0 12px rgba(246,183,60,.08);
-animation:pulsebox 2.8s infinite;
+padding:24px;
+min-height:430px;
 transition:.25s;
+cursor:pointer;
+box-shadow:0 0 10px rgba(246,183,60,.05);
 }
 .main:hover{
 transform:translateY(-8px);
 border-color:#f6b73c;
+box-shadow:
+0 0 10px rgba(246,183,60,.12),
+0 0 24px rgba(246,183,60,.10),
+0 0 40px rgba(246,183,60,.06);
 }
-
-@keyframes pulsebox{
-50%{box-shadow:0 0 18px rgba(246,183,60,.18);}
-}
-
 .main-title{
-font-size:28px;
+font-size:30px;
 font-weight:900;
 color:#f6b73c;
-margin-bottom:16px;
+margin-bottom:18px;
+}
+.subitem{
+padding:12px 14px;
+margin-bottom:10px;
+border-radius:12px;
+background:#151515;
+border:1px solid #222;
+font-size:17px;
+font-weight:700;
+color:white;
 }
 
+/* section pages */
 .title{
 font-size:48px;
 font-weight:900;
 color:#f6b73c;
 margin:10px 0 20px 0;
 }
-
 .subtitle{
 font-size:30px;
 font-weight:800;
 margin:25px 0 10px 0;
 }
-
 .reportbox{
 background:#111;
 border:1px solid #222;
@@ -123,46 +164,18 @@ border-radius:18px;
 padding:20px;
 margin-top:12px;
 }
-
-.splash{
-height:90vh;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:68px;
-font-weight:900;
-font-style:italic;
-color:white;
-opacity:0;
-animation:fadeall 2s ease forwards;
-}
-
-@keyframes fadeall{
-0%{opacity:0;transform:scale(.8);}
-35%{opacity:1;transform:scale(1);}
-70%{opacity:1;}
-100%{opacity:0;transform:scale(1.04);}
-}
-
-.splashsun{
-color:#f6b73c;
-text-shadow:
-0 0 8px rgba(246,183,60,.9),
-0 0 16px rgba(246,183,60,.6),
-0 0 26px rgba(246,183,60,.35);
-}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- SPLASH (EVERY REFRESH) ----------------
-placeholder = st.empty()
-placeholder.markdown("""
+# ---------------- INTRO ----------------
+holder = st.empty()
+holder.markdown("""
 <div class="splash">
-NEX<span class="splashsun">O</span>RA
+NEX<span class="sun">O</span>RA
 </div>
 """, unsafe_allow_html=True)
 time.sleep(2)
-placeholder.empty()
+holder.empty()
 
 # ---------------- TOP ----------------
 a,b = st.columns([8,1])
@@ -189,7 +202,11 @@ if st.session_state.page == "home":
 
     st.markdown("""
     <div class="hero">
-    <h1>Where Energy Is <span class="gold">Managed</span><br>Not Wasted</h1>
+    <h1>
+    Where Energy Is <span class="gold">Managed</span><br>
+    Not Wasted
+    </h1>
+
     <div class="desc">
     Energy is intelligently captured, monitored, and optimized for real-world use.
     This space aims to improve workflow quality, reduce company workload,
@@ -208,19 +225,47 @@ if st.session_state.page == "home":
             st.markdown(f'<div class="stat"><h2>{n}</h2><p>{t}</p></div>', unsafe_allow_html=True)
 
     st.write("")
+
     c1,c2,c3 = st.columns(3)
 
     with c1:
-        st.markdown('<div class="main"><div class="main-title">Performance</div></div>', unsafe_allow_html=True)
-        if st.button("Open Performance"): go("performance")
+        st.markdown("""
+        <div class="main">
+        <div class="main-title">Performance</div>
+        <div class="subitem">Current Performance</div>
+        <div class="subitem">Profits / Losses</div>
+        <div class="subitem">Comparison</div>
+        <div class="subitem">Reports</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Performance", key="p_home"):
+            go("performance")
 
     with c2:
-        st.markdown('<div class="main"><div class="main-title">Expected Data</div></div>', unsafe_allow_html=True)
-        if st.button("Open Expected Data"): go("expected")
+        st.markdown("""
+        <div class="main">
+        <div class="main-title">Expected Data</div>
+        <div class="subitem">Weather</div>
+        <div class="subitem">Predictive Maintenance</div>
+        <div class="subitem">Expected Energy Production</div>
+        <div class="subitem">Best Time for Operation</div>
+        <div class="subitem">Recommendations + Alerts</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Expected", key="e_home"):
+            go("expected")
 
     with c3:
-        st.markdown('<div class="main"><div class="main-title">Battery Status</div></div>', unsafe_allow_html=True)
-        if st.button("Open Battery"): go("battery")
+        st.markdown("""
+        <div class="main">
+        <div class="main-title">Battery Status</div>
+        <div class="subitem">Energy Inventory</div>
+        <div class="subitem">Electrical Metrics</div>
+        <div class="subitem">Battery Health</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Battery", key="b_home"):
+            go("battery")
 
 # ---------------- PERFORMANCE ----------------
 elif st.session_state.page == "performance":
@@ -232,7 +277,6 @@ elif st.session_state.page == "performance":
     a.metric("Current Energy","520 kW")
     b.metric("Production","1800 kWh")
     c.metric("Efficiency","94%")
-    st.line_chart([320,380,430,500,540,510,470])
 
     st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
     a,b,c = st.columns(3)
@@ -241,24 +285,12 @@ elif st.session_state.page == "performance":
     c.metric("Losses","$1,240")
 
     st.markdown('<div class="subtitle">Comparison</div>', unsafe_allow_html=True)
-
-    st.write("Actual Power vs Expected Power")
+    st.write("Actual vs Expected")
     st.line_chart({"Actual":[420,510,490],"Expected":[450,520,505]})
 
-    st.write("Today vs Yesterday")
-    st.line_chart({"Today":[410,520,500],"Yesterday":[390,500,480]})
-
-    st.write("This Month vs Last Month")
-    st.bar_chart({"This Month":[12],"Last Month":[10]})
-
-    st.write("Our System vs Ideal System")
-    st.bar_chart({"Our":[94],"Ideal":[100]})
-
-    # reports last
     st.markdown('<div class="subtitle">Reports</div>', unsafe_allow_html=True)
 
     r1,r2,r3 = st.columns(3)
-
     with r1:
         if st.button("Daily"):
             st.session_state.report_type="Daily"
@@ -272,18 +304,13 @@ elif st.session_state.page == "performance":
     st.markdown(f"""
     <div class="reportbox">
     <b>{st.session_state.report_type} Report Preview</b><br><br>
-    Energy Output: Good<br>
-    Efficiency: Stable<br>
-    Revenue Trend: Positive<br>
-    Recommended Action: Continue Monitoring
+    Output Stable<br>
+    Efficiency Good<br>
+    Revenue Positive
     </div>
     """, unsafe_allow_html=True)
 
-    st.download_button(
-        "Download PDF",
-        data=f"{st.session_state.report_type} Report",
-        file_name=f"{st.session_state.report_type.lower()}_report.pdf"
-    )
+    st.download_button("PDF", data="Report", file_name="report.pdf")
 
 # ---------------- EXPECTED ----------------
 elif st.session_state.page == "expected":
@@ -291,31 +318,21 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
-    st.line_chart({
-        "Day 1":[34],
-        "Day 2":[35],
-        "Day 3":[33],
-        "Day 4":[36]
-    })
+    st.line_chart({"Day1":[34],"Day2":[35],"Day3":[33],"Day4":[36]})
 
     st.markdown('<div class="subtitle">Predictive Maintenance</div>', unsafe_allow_html=True)
-    st.file_uploader("Upload Panel Image")
     a,b = st.columns(2)
     a.metric("Clean","78%")
     b.metric("Dusty","22%")
-    st.info("Light cleaning recommended.")
 
     st.markdown('<div class="subtitle">Expected Energy Production</div>', unsafe_allow_html=True)
     st.write("Predicted Output: 2100 kWh")
-    st.write("Factors: Weather / Panel Cleanliness / Battery Capacity / Low Shading")
 
     st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
     st.success("11 AM - 2 PM")
-    st.write("Highest solar irradiation + stable temperature.")
 
     st.markdown('<div class="subtitle">Recommendations + Alerts</div>', unsafe_allow_html=True)
     st.warning("Clean panels this week.")
-    st.success("Run heavy loads at noon.")
 
 # ---------------- BATTERY ----------------
 elif st.session_state.page == "battery":
@@ -323,9 +340,7 @@ elif st.session_state.page == "battery":
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
-    a,b = st.columns(2)
-    a.metric("Stored Energy","82%")
-    b.metric("Available Capacity","18%")
+    st.metric("Stored Energy","82%")
 
     st.markdown('<div class="subtitle">Electrical Metrics</div>', unsafe_allow_html=True)
     a,b,c = st.columns(3)
@@ -334,8 +349,4 @@ elif st.session_state.page == "battery":
     c.metric("Temp","31°C")
 
     st.markdown('<div class="subtitle">Battery Health</div>', unsafe_allow_html=True)
-    a,b,c = st.columns(3)
-    a.metric("Health","Healthy")
-    b.metric("Cycles","1240")
-    c.metric("Life Span","8.4 Years")
-    st.line_chart([95,92,90,88,85,82])
+    st.metric("Life Span","8.4 Years")
