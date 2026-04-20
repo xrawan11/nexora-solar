@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import nest_asyncio, threading, uvicorn
 
 app = FastAPI(title="Nexora Solar API Fresh")
 
@@ -35,9 +34,6 @@ def expected():
     }
 nest_asyncio.apply()
 
-def run2():
-    uvicorn.run(app, host="0.0.0.0", port=8001)
 
-threading.Thread(target=run2).start()
 
 print("Fresh API on port 8001")
