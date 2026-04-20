@@ -478,7 +478,7 @@ elif st.session_state.page == "expected":
     st.warning("Inspect panel surface this week for minor dust accumulation.")
     st.info("Weather conditions favorable for strong energy production.")
 elif st.session_state.page == "battery":
-bat = requests.get(f"{BASE_URL}/battery-status").json()
+    bat = requests.get(f"{BASE_URL}/battery-status").json()
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
 
     # --------------------------------
