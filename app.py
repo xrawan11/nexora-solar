@@ -13,7 +13,7 @@ st.set_page_config(
 # ---------------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
-    if "intro_done" not in st.session_state:
+if "intro_done" not in st.session_state:
     st.session_state.intro_done = False
 
 def go(page_name):
