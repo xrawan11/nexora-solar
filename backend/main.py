@@ -32,7 +32,6 @@ def expected():
         "dust_probability":18,
         "battery_forecast":85
     }
-nest_asyncio.apply()
 
 
 
