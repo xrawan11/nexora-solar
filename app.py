@@ -413,9 +413,9 @@ elif st.session_state.page == "expected":
 
     a,b,c,d = st.columns(4)
     a.metric("Temperature", "34°C")
-    b.metric("Cloud Cover", f'{weather["clouds"]}%')
-    c.metric("Wind Speed", f'{weather["wind_speed"]} km/h')
-    d.metric("Humidity", f'{weather["humidity"]}%')
+    b.metric("Cloud Cover", "15%")
+    c.metric("Wind Speed", "9 km/h")
+    d.metric("Humidity", "48%")
 
     weather_df = pd.DataFrame({
         "Day":["Day1","Day2","Day3","Day4"],
