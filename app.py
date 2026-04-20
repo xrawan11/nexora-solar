@@ -413,8 +413,8 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
 
     a,b,c,d = st.columns(4)
-    a.metric("Temperature", f'{weather["temperature"]}°C')
-    b.metric("Irradiation", f'{weather["irradiation"]} W/m²')
+    a.metric("Temperature", f'{weather["temp"]}°C')
+    b.metric("Cloud Cover", f'{weather["clouds"]}%')
     c.metric("Wind Speed", f'{weather["wind_speed"]} km/h')
     d.metric("Humidity", f'{weather["humidity"]}%')
 
