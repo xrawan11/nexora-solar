@@ -298,15 +298,39 @@ No abnormal efficiency drop detected.
     })
 
     st.line_chart(chart_df.set_index("Time"))
-    st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
+ # --------------------------------
+# Profits / Losses
+# --------------------------------
+st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
 
-    x,y,z = st.columns(3)
-    x.metric("Revenue","$12,400")
-    y.metric("Profits","$8,100")
-    z.metric("Losses","$1,240")
+x,y,z = st.columns(3)
+x.metric("Revenue", "$12,400")
+y.metric("Profits", "$8,100")
+z.metric("Losses", "$1,240")
 
-    st.bar_chart(pd.DataFrame({"USD":[3,5,6,8,7,9,12]}))
+# Status
+st.markdown('<div class="subtitle">Status</div>', unsafe_allow_html=True)
+st.success("Profitable Performance")
 
+# AI Insight
+st.markdown('<div class="subtitle">AI Insight</div>', unsafe_allow_html=True)
+
+st.info("""
+Profit increased this period due to higher energy production,
+stable operating efficiency, and reduced maintenance costs.
+Losses remained within acceptable range.
+""")
+
+# Profit Graph
+st.markdown('<div class="subtitle">Profit Summary</div>', unsafe_allow_html=True)
+
+st.write("### Profit Trend")
+profit_df = pd.DataFrame({
+    "Month":["Jan","Feb","Mar","Apr","May","Jun"],
+    "Profit":[4200,5100,4800,6200,7100,8100]
+})
+
+st.line_chart(profit_df.set_index("Month"))
     st.markdown('<div class="subtitle">Comparison</div>', unsafe_allow_html=True)
 
     st.write("Actual vs Expected")
