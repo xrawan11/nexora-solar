@@ -353,51 +353,77 @@ elif st.session_state.page == "expected":
 
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
+    # --------------------------------
+    # Weather
+    # --------------------------------
     st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
 
-    a,b,c,d,e = st.columns(5)
-    a.metric("Temperature","34°C")
-    b.metric("Humidity","48%")
-    c.metric("Cloud Cover","15%")
-    d.metric("Irradiation","920 W/m²")
-    e.metric("Wind Speed","9 km/h")
+    a,b,c,d = st.columns(4)
+    a.metric("Temperature", "34°C")
+    b.metric("Solar Irradiation", "920 W/m²")
+    c.metric("Wind Speed", "9 km/h")
+    d.metric("Humidity", "48%")
 
-    st.line_chart(pd.DataFrame({
-        "Temp":[34,35,33,36]
-    }, index=["Day1","Day2","Day3","Day4"]))
+    weather_df = pd.DataFrame({
+        "Day":["Day1","Day2","Day3","Day4"],
+        "Temp":[34,35,33,36],
+        "Rain":[10,15,5,0],
+        "Wind":[9,12,8,10],
+        "Clouds":[20,35,15,10],
+        "Irradiation":[920,880,950,980]
+    })
 
+    st.line_chart(weather_df.set_index("Day"))
+
+    # --------------------------------
+    # Predictive Maintenance
+    # --------------------------------
     st.markdown('<div class="subtitle">Predictive Maintenance</div>', unsafe_allow_html=True)
 
+    x,y,z = st.columns(3)
+    x.metric("Failure Risk", "18%")
+    y.metric("Risk Level", "Low")
+    z.metric("Health Score", "91%")
+
+    st.success("Status: Stable Condition")
+
+    st.markdown("### AI Insight")
+    st.info("System components are operating normally. No immediate maintenance required.")
+
+    st.markdown("### Panel Image Upload")
     st.file_uploader("Upload Panel Image", type=["png","jpg","jpeg"])
 
-    q1,q2 = st.columns(2)
-    q1.metric("Clean Probability","78%")
-    q2.metric("Dusty Probability","22%")
+    c1,c2 = st.columns(2)
+    c1.metric("Clean", "78%")
+    c2.metric("Dusty", "22%")
 
-    st.info("Recommendation: Light cleaning recommended.")
+    st.write("Confidence: 92%")
 
+    # --------------------------------
+    # Expected Energy Production
+    # --------------------------------
     st.markdown('<div class="subtitle">Expected Energy Production</div>', unsafe_allow_html=True)
 
-    st.write("Predicted Output: 2100 kWh")
-    st.write("Factors:")
-    st.write("- Weather quality")
-    st.write("- Panel cleanliness")
-    st.write("- Battery availability")
-    st.write("- Low shading")
+    p1,p2 = st.columns(2)
+    p1.metric("Expected Next Day Production", "2100 kWh")
+    p2.metric("Expected Weekly Average", "1980 kWh")
 
+    # --------------------------------
+    # Best Time for Operation
+    # --------------------------------
     st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
 
     st.success("11:00 AM - 2:00 PM")
-    st.write("Reason: highest irradiation and stable temperature.")
+    st.write("Reason: Highest expected solar irradiation.")
 
+    # --------------------------------
+    # Recommendations + Alerts
+    # --------------------------------
     st.markdown('<div class="subtitle">Recommendations + Alerts</div>', unsafe_allow_html=True)
 
-    st.warning("Clean panels this week.")
-    st.success("Run heavy loads near noon.")
-
-# ==================================================
-# BATTERY PAGE
-# ==================================================
+    st.success("Operate heavy loads during noon hours.")
+    st.warning("Inspect panel surface this week for minor dust accumulation.")
+    st.info("Weather conditions favorable for strong energy production.")
 elif st.session_state.page == "battery":
 
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
