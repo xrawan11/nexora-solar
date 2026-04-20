@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 
 st.set_page_config(
     page_title="Nexora Solar",
@@ -12,6 +13,8 @@ st.set_page_config(
 # ---------------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
+    if "intro_done" not in st.session_state:
+    st.session_state.intro_done = False
 
 def go(page_name):
     st.session_state.page = page_name
@@ -139,9 +142,55 @@ div.stButton > button:hover{
     border-color:#f6b73c;
     color:#f6b73c;
 }
+.intro-wrap{
+    height:92vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.intro-logo{
+    font-size:78px;
+    font-weight:900;
+    font-style:italic;
+    color:white;
+    letter-spacing:4px;
+    animation:introFade 2s ease forwards;
+}
+
+.intro-sun{
+    color:#f6b73c;
+    text-shadow:
+    0 0 10px rgba(246,183,60,1),
+    0 0 22px rgba(246,183,60,.7),
+    0 0 38px rgba(246,183,60,.4);
+}
+
+@keyframes introFade{
+    0%{opacity:0;transform:scale(.78);}
+    35%{opacity:1;transform:scale(1);}
+    70%{opacity:1;}
+    100%{opacity:0;transform:scale(1.06);}
+}
 </style>
 """, unsafe_allow_html=True)
+if not st.session_state.intro_done:
 
+    splash = st.empty()
+
+    splash.markdown("""
+    <div class="intro-wrap">
+        <div class="intro-logo">
+            NEX<span class="intro-sun">O</span>RA
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    time.sleep(2)
+
+    splash.empty()
+    st.session_state.intro_done = True
+    st.rerun()
 # ---------------------------
 # TOP BAR
 # ---------------------------
