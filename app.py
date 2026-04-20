@@ -404,8 +404,6 @@ elif st.session_state.page == "performance":
 elif st.session_state.page == "expected":
     weather = requests.get(f"{BASE_URL}/weather").json()
     exp = requests.get(f"{BASE_URL}/expected-data").json()
-    st.write(exp)
-    st.stop()
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
     # --------------------------------
