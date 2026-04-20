@@ -403,7 +403,7 @@ elif st.session_state.page == "performance":
         st.button("Monthly", key="monthly_report")
         st.download_button("PDF", "Monthly Report", file_name="monthly.pdf")
 elif st.session_state.page == "expected":
-exp = requests.get(f"{BASE_URL}/expected-data").json()
+    exp = requests.get(f"{BASE_URL}/expected-data").json()
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
     # --------------------------------
