@@ -322,56 +322,56 @@ Losses remained within acceptable range.
 """)
 
 # Profit Graph
-st.markdown('<div class="subtitle">Profit Summary</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Profit Summary</div>', unsafe_allow_html=True)
 
-st.write("### Profit Trend")
-profit_df = pd.DataFrame({
-    "Month":["Jan","Feb","Mar","Apr","May","Jun"],
-    "Profit":[4200,5100,4800,6200,7100,8100]
-})
+    st.write("### Profit Trend")
+    profit_df = pd.DataFrame({
+        "Month":["Jan","Feb","Mar","Apr","May","Jun"],
+        "Profit":[4200,5100,4800,6200,7100,8100]
+    })
 
-st.line_chart(profit_df.set_index("Month"))
+    st.line_chart(profit_df.set_index("Month"))
 
     # --------------------------------
-# Performance Comparing
-# --------------------------------
-st.markdown('<div class="subtitle">Performance Comparing</div>', unsafe_allow_html=True)
+    # Performance Comparing
+    # --------------------------------
+    st.markdown('<div class="subtitle">Performance Comparing</div>', unsafe_allow_html=True)
 
-# Actual vs Expected
-st.write("### Actual vs Expected")
-df1 = pd.DataFrame({
-    "Hour":["06","08","10","12","14","16","18"],
-    "Actual":[80,220,410,560,520,350,120],
-    "Expected":[90,240,430,580,540,360,130]
-})
-st.line_chart(df1.set_index("Hour"))
+    # Actual vs Expected
+    st.write("### Actual vs Expected")
+    df1 = pd.DataFrame({
+        "Hour":["06","08","10","12","14","16","18"],
+        "Actual":[80,220,410,560,520,350,120],
+        "Expected":[90,240,430,580,540,360,130]
+    })
+    st.line_chart(df1.set_index("Hour"))
 
-# Today vs Yesterday
-st.write("### Today vs Yesterday")
-df2 = pd.DataFrame({
-    "Hour":["06","08","10","12","14","16","18"],
-    "Today":[85,230,420,555,515,340,110],
-    "Yesterday":[70,210,390,520,500,320,100]
-})
-st.line_chart(df2.set_index("Hour"))
+    # Today vs Yesterday
+    st.write("### Today vs Yesterday")
+    df2 = pd.DataFrame({
+        "Hour":["06","08","10","12","14","16","18"],
+        "Today":[85,230,420,555,515,340,110],
+        "Yesterday":[70,210,390,520,500,320,100]
+    })
+    st.line_chart(df2.set_index("Hour"))
 
-# This Month vs Last Month
-st.write("### This Month vs Last Month")
-df3 = pd.DataFrame({
-    "Day":["1","5","10","15","20","25","30"],
-    "This Month":[1650,1720,1800,1760,1840,1900,1950],
-    "Last Month":[1500,1580,1620,1660,1700,1750,1800]
-})
-st.line_chart(df3.set_index("Day"))
+    # This Month vs Last Month
+    st.write("### This Month vs Last Month")
+    df3 = pd.DataFrame({
+        "Day":["1","5","10","15","20","25","30"],
+        "This Month":[1650,1720,1800,1760,1840,1900,1950],
+        "Last Month":[1500,1580,1620,1660,1700,1750,1800]
+    })
+    st.line_chart(df3.set_index("Day"))
 
-# Our System vs Ideal System
-st.write("### Our System vs Ideal System")
-df4 = pd.DataFrame({
-    "Hour":["06","08","10","12","14","16","18"],
-    "Our System":[78,218,405,550,510,338,115],
-    "Ideal System":[90,240,430,580,540,360,130]
-})
-st.line_chart(df4.set_index("Hour"))
+    # Our System vs Ideal System
+    st.write("### Our System vs Ideal System")
+    df4 = pd.DataFrame({
+        "Hour":["06","08","10","12","14","16","18"],
+        "Our System":[78,218,405,550,510,338,115],
+        "Ideal System":[90,240,430,580,540,360,130]
+    })
+    st.line_chart(df4.set_index("Hour"))
 
     st.markdown('<div class="subtitle">Reports</div>', unsafe_allow_html=True)
 
