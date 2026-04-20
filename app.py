@@ -254,9 +254,7 @@ elif st.session_state.page == "performance":
 
     st.markdown('<div class="title">Performance</div>', unsafe_allow_html=True)
 
-    # --------------------------------
     # Current Performance
-    # --------------------------------
     st.markdown('<div class="subtitle">Current Performance</div>', unsafe_allow_html=True)
 
     a,b,c = st.columns(3)
@@ -264,98 +262,61 @@ elif st.session_state.page == "performance":
     b.metric("Production", "1800 kWh")
     c.metric("Efficiency", "94%")
 
-    # --------------------------------
-    # System Status
-    # --------------------------------
     st.markdown('<div class="subtitle">System Status</div>', unsafe_allow_html=True)
     st.success("Normal Operation")
 
-    # --------------------------------
-    # AI Insight
-    # --------------------------------
     st.markdown('<div class="subtitle">AI Insight</div>', unsafe_allow_html=True)
+    st.info("Performance increased due to strong irradiation and stable weather conditions.")
 
-    st.info("""
-Performance increased today due to strong solar irradiation,
-low cloud cover, and stable panel temperature.
-No abnormal efficiency drop detected.
-""")
-
-    # --------------------------------
-    # Live Graph - Last 24 Hours
-    # --------------------------------
     st.markdown('<div class="subtitle">Live Graph - Last 24 Hours</div>', unsafe_allow_html=True)
 
-    chart_df = pd.DataFrame({
-        "Time":[
-            "00","01","02","03","04","05","06","07","08","09","10","11",
-            "12","13","14","15","16","17","18","19","20","21","22","23"
-        ],
-        "Power":[
-            0,0,0,0,5,20,80,160,260,390,470,530,
-            560,545,520,480,410,300,180,70,10,0,0,0
-        ]
+    live_df = pd.DataFrame({
+        "Hour":["00","03","06","09","12","15","18","21"],
+        "Power":[0,0,80,320,560,470,140,0]
     })
+    st.line_chart(live_df.set_index("Hour"))
 
-    st.line_chart(chart_df.set_index("Time"))
- # --------------------------------
-# Profits / Losses
-# --------------------------------
-st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
+    # Profits / Losses
+    st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
 
-x,y,z = st.columns(3)
-x.metric("Revenue", "$12,400")
-y.metric("Profits", "$8,100")
-z.metric("Losses", "$1,240")
+    x,y,z = st.columns(3)
+    x.metric("Revenue", "$12,400")
+    y.metric("Profits", "$8,100")
+    z.metric("Losses", "$1,240")
 
-# Status
-st.markdown('<div class="subtitle">Status</div>', unsafe_allow_html=True)
-st.success("Profitable Performance")
+    st.markdown('<div class="subtitle">Status</div>', unsafe_allow_html=True)
+    st.success("Profitable Performance")
 
-# AI Insight
-st.markdown('<div class="subtitle">AI Insight</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">AI Insight</div>', unsafe_allow_html=True)
+    st.info("Higher profits were driven by increased daily production and lower maintenance load.")
 
-st.info("""
-Profit increased this period due to higher energy production,
-stable operating efficiency, and reduced maintenance costs.
-Losses remained within acceptable range.
-""")
-
-# Profit Graph
     st.markdown('<div class="subtitle">Profit Summary</div>', unsafe_allow_html=True)
 
-    st.write("### Profit Trend")
     profit_df = pd.DataFrame({
         "Month":["Jan","Feb","Mar","Apr","May","Jun"],
         "Profit":[4200,5100,4800,6200,7100,8100]
     })
-
     st.line_chart(profit_df.set_index("Month"))
 
-    # --------------------------------
     # Performance Comparing
-    # --------------------------------
     st.markdown('<div class="subtitle">Performance Comparing</div>', unsafe_allow_html=True)
 
-    # Actual vs Expected
     st.write("### Actual vs Expected")
     df1 = pd.DataFrame({
-        "Hour":["06","08","10","12","14","16","18"],
-        "Actual":[80,220,410,560,520,350,120],
-        "Expected":[90,240,430,580,540,360,130]
+        "Hour":["06","08","10","12","14","16"],
+        "Actual":[80,220,410,560,520,350],
+        "Expected":[90,240,430,580,540,360]
     })
     st.line_chart(df1.set_index("Hour"))
 
-    # Today vs Yesterday
     st.write("### Today vs Yesterday")
     df2 = pd.DataFrame({
-        "Hour":["06","08","10","12","14","16","18"],
-        "Today":[85,230,420,555,515,340,110],
-        "Yesterday":[70,210,390,520,500,320,100]
+        "Hour":["06","08","10","12","14","16"],
+        "Today":[85,230,420,555,515,340],
+        "Yesterday":[70,210,390,520,500,320]
     })
     st.line_chart(df2.set_index("Hour"))
 
-    # This Month vs Last Month
     st.write("### This Month vs Last Month")
     df3 = pd.DataFrame({
         "Day":["1","5","10","15","20","25","30"],
@@ -364,15 +325,15 @@ Losses remained within acceptable range.
     })
     st.line_chart(df3.set_index("Day"))
 
-    # Our System vs Ideal System
     st.write("### Our System vs Ideal System")
     df4 = pd.DataFrame({
-        "Hour":["06","08","10","12","14","16","18"],
-        "Our System":[78,218,405,550,510,338,115],
-        "Ideal System":[90,240,430,580,540,360,130]
+        "Hour":["06","08","10","12","14","16"],
+        "Our System":[78,218,405,550,510,338],
+        "Ideal System":[90,240,430,580,540,360]
     })
     st.line_chart(df4.set_index("Hour"))
 
+    # Reports
     st.markdown('<div class="subtitle">Reports</div>', unsafe_allow_html=True)
 
     r1,r2,r3 = st.columns(3)
@@ -388,10 +349,6 @@ Losses remained within acceptable range.
     with r3:
         st.button("Monthly", key="monthly_report")
         st.download_button("PDF", "Monthly Report", file_name="monthly.pdf")
-
-# ==================================================
-# EXPECTED DATA PAGE
-# ==================================================
 elif st.session_state.page == "expected":
 
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
