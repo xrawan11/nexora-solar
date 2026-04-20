@@ -254,21 +254,50 @@ elif st.session_state.page == "performance":
 
     st.markdown('<div class="title">Performance</div>', unsafe_allow_html=True)
 
+    # --------------------------------
+    # Current Performance
+    # --------------------------------
     st.markdown('<div class="subtitle">Current Performance</div>', unsafe_allow_html=True)
 
     a,b,c = st.columns(3)
-    a.metric("Current Energy","520 kW")
-    b.metric("Production","1800 kWh")
-    c.metric("Efficiency","94%")
+    a.metric("Current Power", "520 kW")
+    b.metric("Production", "1800 kWh")
+    c.metric("Efficiency", "94%")
 
-    st.write("Live Output Graph - Last 24 Hours")
-    st.line_chart(
-        pd.DataFrame({
-            "kW":[220,250,270,290,310,340,370,410,450,500,530,550,
-                  560,540,520,500,470,430,390,350,320,290,260,230]
-        })
-    )
+    # --------------------------------
+    # System Status
+    # --------------------------------
+    st.markdown('<div class="subtitle">System Status</div>', unsafe_allow_html=True)
+    st.success("Normal Operation")
 
+    # --------------------------------
+    # AI Insight
+    # --------------------------------
+    st.markdown('<div class="subtitle">AI Insight</div>', unsafe_allow_html=True)
+
+    st.info("""
+Performance increased today due to strong solar irradiation,
+low cloud cover, and stable panel temperature.
+No abnormal efficiency drop detected.
+""")
+
+    # --------------------------------
+    # Live Graph - Last 24 Hours
+    # --------------------------------
+    st.markdown('<div class="subtitle">Live Graph - Last 24 Hours</div>', unsafe_allow_html=True)
+
+    chart_df = pd.DataFrame({
+        "Time":[
+            "00","01","02","03","04","05","06","07","08","09","10","11",
+            "12","13","14","15","16","17","18","19","20","21","22","23"
+        ],
+        "Power":[
+            0,0,0,0,5,20,80,160,260,390,470,530,
+            560,545,520,480,410,300,180,70,10,0,0,0
+        ]
+    })
+
+    st.line_chart(chart_df.set_index("Time"))
     st.markdown('<div class="subtitle">Profits / Losses</div>', unsafe_allow_html=True)
 
     x,y,z = st.columns(3)
