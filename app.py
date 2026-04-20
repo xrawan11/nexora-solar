@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import time
+BASE_URL = "https://shadow-residue-headcount.ngrok-free.dev"
 
 st.set_page_config(
     page_title="Nexora Solar",
@@ -308,7 +309,7 @@ elif st.session_state.page == "performance":
     st.markdown('<div class="subtitle">Current Performance</div>', unsafe_allow_html=True)
 
     a,b,c = st.columns(3)
-    data = requests.get("https://shadow-residue-headcount.ngrok-free.dev/performance").json()
+    data = requests.get(f"{BASE_URL}/performance").json()
 
     a.metric("Current Power", f'{data["current_power"]} kW')
     b.metric("Production", f'{data["production"]} kWh')
@@ -402,7 +403,7 @@ elif st.session_state.page == "performance":
         st.button("Monthly", key="monthly_report")
         st.download_button("PDF", "Monthly Report", file_name="monthly.pdf")
 elif st.session_state.page == "expected":
-
+exp = requests.get(f"{BASE_URL}/expected-data").json()
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
     # --------------------------------
@@ -411,10 +412,10 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
 
     a,b,c,d = st.columns(4)
-    a.metric("Temperature", "34°C")
-    b.metric("Solar Irradiation", "920 W/m²")
-    c.metric("Wind Speed", "9 km/h")
-    d.metric("Humidity", "48%")
+    a.metric("Temperature", f'{exp["temperature"]}°C')
+    b.metric("Irradiation", f'{exp["irradiation"]} W/m²')
+    c.metric("Wind Speed", f'{exp["wind_speed"]} km/h')
+    d.metric("Humidity", f'{exp["humidity"]}%')
 
     weather_df = pd.DataFrame({
         "Day":["Day1","Day2","Day3","Day4"],
@@ -477,7 +478,7 @@ elif st.session_state.page == "expected":
     st.warning("Inspect panel surface this week for minor dust accumulation.")
     st.info("Weather conditions favorable for strong energy production.")
 elif st.session_state.page == "battery":
-
+bat = requests.get(f"{BASE_URL}/battery-status").json()
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
 
     # --------------------------------
@@ -486,8 +487,8 @@ elif st.session_state.page == "battery":
     st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
 
     a,b = st.columns(2)
-    a.metric("Battery Level", "82%")
-    b.metric("Stored Energy", "148 kWh")
+    a.metric("Battery Level", f'{bat["battery_level"]}%')
+    b.metric("Stored Energy", f'{bat["stored_energy"]} kWh')
 
     # --------------------------------
     # Battery Health Metrics
@@ -495,9 +496,9 @@ elif st.session_state.page == "battery":
     st.markdown('<div class="subtitle">Battery Health Metrics</div>', unsafe_allow_html=True)
 
     x,y,z = st.columns(3)
-    x.metric("Voltage", "412 V")
-    y.metric("Current", "32 A")
-    z.metric("Temp", "31°C")
+    x.metric("Voltage", f'{bat["voltage"]} V')
+    y.metric("Current", f'{bat["current"]} A')
+    z.metric("Temp", f'{bat["temperature"]}°C')
 
     # --------------------------------
     # Battery Status
