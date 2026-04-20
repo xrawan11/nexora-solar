@@ -488,8 +488,8 @@ elif st.session_state.page == "battery":
     st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
 
     a,b = st.columns(2)
-    a.metric("Battery Level", f'{bat["battery_level"]}%')
-    b.metric("Stored Energy", f'{bat["stored_energy"]} kWh')
+    a.metric("Battery Level", "82%")
+    b.metric("Stored Energy", "18 kWh")
 
     # --------------------------------
     # Battery Health Metrics
@@ -497,9 +497,9 @@ elif st.session_state.page == "battery":
     st.markdown('<div class="subtitle">Battery Health Metrics</div>', unsafe_allow_html=True)
 
     x,y,z = st.columns(3)
-    x.metric("Voltage", f'{bat["voltage"]} V')
-    y.metric("Current", f'{bat["current"]} A')
-    z.metric("Temp", f'{bat["temperature"]}°C')
+    x.metric("Voltage", "412 V")
+    y.metric("Current", "32 A")
+    z.metric("Temp", "31°C")
 
     # --------------------------------
     # Battery Status
