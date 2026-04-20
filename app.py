@@ -428,26 +428,73 @@ elif st.session_state.page == "battery":
 
     st.markdown('<div class="title">Battery Status</div>', unsafe_allow_html=True)
 
+    # --------------------------------
+    # Energy Inventory
+    # --------------------------------
     st.markdown('<div class="subtitle">Energy Inventory</div>', unsafe_allow_html=True)
 
-    p1,p2 = st.columns(2)
-    p1.metric("Stored Energy","82%")
-    p2.metric("Available Capacity","18%")
+    a,b = st.columns(2)
+    a.metric("Battery Level", "82%")
+    b.metric("Stored Energy", "148 kWh")
 
-    st.markdown('<div class="subtitle">Electrical Metrics</div>', unsafe_allow_html=True)
-
-    a,b,c = st.columns(3)
-    a.metric("Voltage","412 V")
-    b.metric("Current","32 A")
-    c.metric("Temp","31°C")
-
-    st.markdown('<div class="subtitle">Battery Health</div>', unsafe_allow_html=True)
+    # --------------------------------
+    # Battery Health Metrics
+    # --------------------------------
+    st.markdown('<div class="subtitle">Battery Health Metrics</div>', unsafe_allow_html=True)
 
     x,y,z = st.columns(3)
-    x.metric("Health","Healthy")
-    y.metric("Cycles","1240")
-    z.metric("Life Span","8.4 Years")
+    x.metric("Voltage", "412 V")
+    y.metric("Current", "32 A")
+    z.metric("Temp", "31°C")
 
-    st.line_chart(pd.DataFrame({
-        "Charge %":[95,92,90,88,85,82]
-    }))
+    # --------------------------------
+    # Battery Status
+    # --------------------------------
+    st.markdown('<div class="subtitle">Battery Status</div>', unsafe_allow_html=True)
+
+    st.success("Healthy")
+
+    st.markdown("### AI Insight")
+    st.info("Battery operating within optimal range. Stable temperature and healthy charge retention detected.")
+
+    # --------------------------------
+    # Battery Level Trend
+    # --------------------------------
+    st.markdown('<div class="subtitle">Battery Level Trend</div>', unsafe_allow_html=True)
+
+    trend_df = pd.DataFrame({
+        "Recent Readings":["1","2","3","4","5","6"],
+        "Battery %":[95,92,90,88,85,82]
+    })
+
+    st.line_chart(trend_df.set_index("Recent Readings"))
+
+    # --------------------------------
+    # Battery Mode
+    # --------------------------------
+    st.markdown('<div class="subtitle">Battery Mode</div>', unsafe_allow_html=True)
+
+    st.info("Charging Detected")
+
+    # --------------------------------
+    # Remaining Time Estimate
+    # --------------------------------
+    st.markdown('<div class="subtitle">Remaining Time Estimate</div>', unsafe_allow_html=True)
+
+    st.write("Estimated Runtime: 6.4 Hours")
+
+    # --------------------------------
+    # Battery Alerts
+    # --------------------------------
+    st.markdown('<div class="subtitle">Battery Alerts</div>', unsafe_allow_html=True)
+
+    st.success("No critical alerts detected.")
+
+    # --------------------------------
+    # Health Degradation Forecast
+    # --------------------------------
+    st.markdown('<div class="subtitle">Health Degradation Forecast</div>', unsafe_allow_html=True)
+
+    c1,c2 = st.columns(2)
+    c1.metric("Predicted Future Battery Health", "87%")
+    c2.metric("Forecast Status", "Normal Aging")
