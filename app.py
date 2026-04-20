@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import requests
 import time
 
 st.set_page_config(
@@ -307,9 +308,11 @@ elif st.session_state.page == "performance":
     st.markdown('<div class="subtitle">Current Performance</div>', unsafe_allow_html=True)
 
     a,b,c = st.columns(3)
-    a.metric("Current Power", "520 kW")
-    b.metric("Production", "1800 kWh")
-    c.metric("Efficiency", "94%")
+    data = requests.get("https://shadow-residue-headcount.ngrok-free.dev/performance").json()
+
+a.metric("Current Power", f'{data["current_power"]} kW')
+b.metric("Production", f'{data["production"]} kWh')
+c.metric("Efficiency", f'{data["efficiency"]}%')
 
     st.markdown('<div class="subtitle">System Status</div>', unsafe_allow_html=True)
     st.success("Normal Operation")
