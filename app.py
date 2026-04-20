@@ -403,6 +403,7 @@ elif st.session_state.page == "performance":
         st.button("Monthly", key="monthly_report")
         st.download_button("PDF", "Monthly Report", file_name="monthly.pdf")
 elif st.session_state.page == "expected":
+    weather = requests.get(f"{BASE_URL}/weather").json()
     exp = requests.get(f"{BASE_URL}/expected-data").json()
     st.markdown('<div class="title">Expected Data</div>', unsafe_allow_html=True)
 
@@ -412,10 +413,10 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Weather</div>', unsafe_allow_html=True)
 
     a,b,c,d = st.columns(4)
-    a.metric("Temperature", f'{exp["temperature"]}°C')
-    b.metric("Irradiation", f'{exp["irradiation"]} W/m²')
-    c.metric("Wind Speed", f'{exp["wind_speed"]} km/h')
-    d.metric("Humidity", f'{exp["humidity"]}%')
+    a.metric("Temperature", f'{weather["temperature"]}°C')
+    b.metric("Irradiation", f'{weather["irradiation"]} W/m²')
+    c.metric("Wind Speed", f'{weather["wind_speed"]} km/h')
+    d.metric("Humidity", f'{weather["humidity"]}%')
 
     weather_df = pd.DataFrame({
         "Day":["Day1","Day2","Day3","Day4"],
@@ -467,7 +468,7 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
 
     st.success("11:00 AM - 2:00 PM")
-    st.write("Reason: Highest expected solar irradiation.")
+    st.write(f'Predicted Output: {exp["predicted_output"]} kWh')
 
     # --------------------------------
     # Recommendations + Alerts
