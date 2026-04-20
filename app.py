@@ -302,7 +302,7 @@ if st.session_state.page == "home":
 # PERFORMANCE PAGE
 # ==================================================
 elif st.session_state.page == "performance":
-
+    data = requests.get(f"{BASE_URL}/performance").json()
     st.markdown('<div class="title">Performance</div>', unsafe_allow_html=True)
 
     # Current Performance
@@ -314,7 +314,6 @@ elif st.session_state.page == "performance":
     a.metric("Current Power", f'{data["current_power"]} kW')
     b.metric("Production", f'{data["production"]} kWh')
     c.metric("Efficiency", f'{data["efficiency"]}%')
-
     st.markdown('<div class="subtitle">System Status</div>', unsafe_allow_html=True)
     st.success("Normal Operation")
 
