@@ -310,9 +310,9 @@ elif st.session_state.page == "performance":
     a,b,c = st.columns(3)
     data = requests.get("https://shadow-residue-headcount.ngrok-free.dev/performance").json()
 
-a.metric("Current Power", f'{data["current_power"]} kW')
-b.metric("Production", f'{data["production"]} kWh')
-c.metric("Efficiency", f'{data["efficiency"]}%')
+    a.metric("Current Power", f'{data["current_power"]} kW')
+    b.metric("Production", f'{data["production"]} kWh')
+    c.metric("Efficiency", f'{data["efficiency"]}%')
 
     st.markdown('<div class="subtitle">System Status</div>', unsafe_allow_html=True)
     st.success("Normal Operation")
