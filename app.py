@@ -467,7 +467,11 @@ elif st.session_state.page == "expected":
     st.markdown('<div class="subtitle">Best Time for Operation</div>', unsafe_allow_html=True)
 
     st.success("11:00 AM - 2:00 PM")
-    st.write(f'Predicted Output: {exp["predicted_output"]} kWh')
+    st.write(f'Predicted Output: {exp.get("predicted_output", "N/A")} kWh')
+    st.write(f'Tomorrow Efficiency: {exp.get("tomorrow_efficiency", "N/A")}%')
+    st.write(f'Maintenance Risk: {exp.get("maintenance_risk", "N/A")}')
+    st.write(f'Dust Probability: {exp.get("dust_probability", "N/A")}%')
+    st.write(f'Battery Forecast: {exp.get("battery_forecast", "N/A")}%')
 
     # --------------------------------
     # Recommendations + Alerts
