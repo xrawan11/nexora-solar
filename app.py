@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import time
-BASE_URL = "https://shadow-residue-headcount.ngrok-free.dev/"
+BASE_URL = "https://nexora-solar.onrender.com"
 
 st.set_page_config(
     page_title="Nexora Solar",
